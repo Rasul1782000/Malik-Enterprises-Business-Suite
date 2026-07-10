@@ -1,0 +1,17 @@
+{
+  "name": "laravel/laravel",
+  "type": "project",
+  "description": "Secure API Gateway for Malik Enterprises.",
+  "keywords": ["laravel", "framework", "api"],
+  "license": "MIT",
+  "require": {
+    "php": "^8.2",
+    "laravel/framework": "^11.0",
+    "laravel/tinker": "^2.9"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  }
+}

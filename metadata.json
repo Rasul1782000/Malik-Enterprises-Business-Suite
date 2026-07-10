@@ -1,0 +1,6 @@
+{
+  "name": "Malik Enterprises",
+  "description": "Enterprise portal and landing page for Malik Enterprises, a leading industrial manufacturing, general merchandise retail, and commercial machinery repair firm in Multan, Pakistan.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

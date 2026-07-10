@@ -1,0 +1,212 @@
+<!-- Top Header/Navbar -->
+<header class="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur-md">
+  <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    
+    <!-- Brand Logo -->
+    <div (click)="setTab('home')" class="flex cursor-pointer items-center space-x-2.5">
+      <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-md shadow-emerald-600/10">
+        <svg class="h-5.5 w-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+      </div>
+      <div>
+        <h1 class="font-display text-lg font-bold tracking-tight text-slate-900 leading-none">MALIK</h1>
+        <span class="font-sans text-[10px] font-semibold tracking-widest text-slate-500 uppercase block mt-0.5">ENTERPRISES</span>
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <nav class="hidden md:flex space-x-1">
+      <button (click)="setTab('home')" 
+        [class]="activeTab() === 'home' ? 'bg-slate-100 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'"
+        class="flex items-center space-x-2 rounded-lg px-4 py-2 text-sm font-medium transition-all">
+        <span>Home</span>
+      </button>
+      <button (click)="setTab('services')" 
+        [class]="activeTab() === 'services' ? 'bg-slate-100 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'"
+        class="flex items-center space-x-2 rounded-lg px-4 py-2 text-sm font-medium transition-all">
+        <span>Divisions</span>
+      </button>
+      <button (click)="setTab('careers')" 
+        [class]="activeTab() === 'careers' ? 'bg-slate-100 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'"
+        class="flex items-center space-x-2 rounded-lg px-4 py-2 text-sm font-medium transition-all">
+        <span>Careers</span>
+      </button>
+      <button (click)="setTab('contact')" 
+        [class]="activeTab() === 'contact' ? 'bg-slate-100 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'"
+        class="flex items-center space-x-2 rounded-lg px-4 py-2 text-sm font-medium transition-all">
+        <span>Contact Us</span>
+      </button>
+    </nav>
+
+    <!-- Laravel API Status connection badge -->
+    <div class="flex items-center space-x-3">
+      <div [class]="apiConnected() ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200'"
+        class="flex items-center space-x-1.5 rounded-full px-3 py-1 text-xs font-medium border">
+        <span class="relative flex h-2 w-2">
+          <span [class]="apiConnected() ? 'bg-emerald-400' : 'bg-rose-400'" class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"></span>
+          <span [class]="apiConnected() ? 'bg-emerald-600' : 'bg-rose-600'" class="relative inline-flex rounded-full h-2 w-2"></span>
+        </span>
+        <span class="font-mono text-[10px]">{{ apiConnected() ? 'LARAVEL SECURE' : 'CONNECTING' }}</span>
+      </div>
+    </div>
+
+  </div>
+</header>
+
+<!-- Main Sections switcher -->
+<main class="flex-grow">
+  
+  <!-- HOME SECTION -->
+  @if (activeTab() === 'home') {
+    <section class="py-16 bg-white max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="space-y-6">
+          <span class="bg-slate-100 border border-slate-200 rounded-full text-xs font-semibold px-3 py-1 inline-block">Multan Industrial Hub</span>
+          <h2 class="text-4xl font-extrabold text-slate-900 leading-tight">Engineering Industrial Progress with Absolute Precision</h2>
+          <p class="text-slate-600 leading-relaxed text-sm">
+            Based in Multan Industrial Estate Phase-1, Malik Enterprises delivers high-performance logistics sourcing, plastic molding, and machinery calibration repairs under Key Principal <strong>Malik Faisal Azeem</strong>.
+          </p>
+          <div class="flex space-x-4">
+            <button (click)="setTab('services')" class="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-5 py-3 text-xs font-bold shadow">Explore Divisions</button>
+            <button (click)="setTab('careers')" class="border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl px-5 py-3 text-xs font-bold bg-white">Join Our Team</button>
+          </div>
+        </div>
+        <div class="bg-slate-50 rounded-2xl border p-6 space-y-4">
+          <span class="text-[9px] font-mono text-slate-400 font-bold tracking-wider">REGISTRY DETAILS</span>
+          <div class="bg-white p-4 border rounded-xl shadow-xs">
+            <h4 class="font-bold text-slate-800 text-xs">Warehouse Logistics</h4>
+            <p class="text-slate-500 text-[11px] mt-1">General merchandise & bulk supercenter distribution.</p>
+          </div>
+          <div class="bg-white p-4 border rounded-xl shadow-xs">
+            <h4 class="font-bold text-slate-800 text-xs">Plastics Fabrication</h4>
+            <p class="text-slate-500 text-[11px] mt-1">Precision polymer blow molding & injection extrusion.</p>
+          </div>
+          <div class="bg-white p-4 border rounded-xl shadow-xs">
+            <h4 class="font-bold text-slate-800 text-xs">Machinery Maintenance</h4>
+            <p class="text-slate-500 text-[11px] mt-1">Hydraulics upkeep, gear troubleshooting & overhaul repairs.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  }
+
+  <!-- SERVICES SECTION -->
+  @if (activeTab() === 'services') {
+    <section class="py-16 max-w-7xl mx-auto px-4">
+      <h3 class="text-2xl font-bold text-slate-900 text-center mb-8">Our Enterprise Divisions</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="p-6 bg-white border rounded-2xl shadow-xs space-y-3">
+          <h4 class="font-bold text-lg text-emerald-700">Logistics & General Merchandise</h4>
+          <p class="text-slate-500 text-xs">We provide complete warehousing, container logistics and procurement sourcing for supercenters.</p>
+        </div>
+        <div class="p-6 bg-white border rounded-2xl shadow-xs space-y-3">
+          <h4 class="font-bold text-lg text-emerald-700">Plastics Manufacturing</h4>
+          <p class="text-slate-500 text-xs">Advanced extruder machinery processing custom polymer packaging, blow crates, and canisters.</p>
+        </div>
+        <div class="p-6 bg-white border rounded-2xl shadow-xs space-y-3">
+          <h4 class="font-bold text-lg text-emerald-700">Industrial Repairs</h4>
+          <p class="text-slate-500 text-xs">Complete gearbox calibration, cylinder repairs, and preventative plant upkeep schedules.</p>
+        </div>
+      </div>
+    </section>
+  }
+
+  <!-- CAREERS SECTION -->
+  @if (activeTab() === 'careers') {
+    <section class="py-16 max-w-5xl mx-auto px-4">
+      <h3 class="text-2xl font-bold text-slate-900 mb-6">Open Engineering Careers</h3>
+      
+      <div class="space-y-4">
+        @for (job of jobs(); track job.id) {
+          <div class="p-5 border bg-white rounded-xl flex justify-between items-center">
+            <div>
+              <span class="bg-emerald-50 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">{{ job.department }}</span>
+              <h4 class="font-bold text-slate-800 mt-1.5">{{ job.title }}</h4>
+              <p class="text-slate-500 text-xs mt-1">{{ job.location }} • Experience: {{ job.experience }}</p>
+            </div>
+            <button (click)="openApplyForm(job)" class="bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-4 py-2 text-xs font-bold">Apply Now</button>
+          </div>
+        }
+      </div>
+
+      <!-- Secure Candidate Application Form -->
+      @if (selectedApplyJob()) {
+        <div class="mt-8 p-8 border bg-white rounded-2xl space-y-4">
+          <h4 class="text-lg font-bold text-slate-900 border-b pb-2">Apply for: {{ selectedApplyJob()?.title }}</h4>
+          
+          @if (applySuccess()) {
+            <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-sm">
+              {{ applySuccess() }} <br> <strong>APPLICATION REFERENCE ID: {{ applyReceipt() }}</strong>
+            </div>
+          } @else {
+            <form (submit)="submitApplication()" class="space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input type="text" [(ngModel)]="applyForm.name" name="name" placeholder="Full Name" class="border p-2.5 rounded-lg text-sm w-full" required />
+                <input type="email" [(ngModel)]="applyForm.email" name="email" placeholder="Email" class="border p-2.5 rounded-lg text-sm w-full" required />
+                <input type="text" [(ngModel)]="applyForm.phone" name="phone" placeholder="Phone Code" class="border p-2.5 rounded-lg text-sm w-full" required />
+                <input type="text" [(ngModel)]="applyForm.portfolioUrl" name="portfolio" placeholder="LinkedIn URL" class="border p-2.5 rounded-lg text-sm w-full" />
+              </div>
+              <textarea [(ngModel)]="applyForm.coverLetter" name="cover" placeholder="Cover Letter Statement" class="border p-2.5 rounded-lg text-sm w-full" rows="3"></textarea>
+              
+              <div (dragover)="$event.preventDefault()" (drop)="handleFileDrop($event)" class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center cursor-pointer hover:border-emerald-500">
+                <input type="file" (change)="handleFileSelect($event)" accept=".pdf,.docx" class="hidden" id="ang-file" />
+                <label for="ang-file" class="text-xs text-slate-500 font-medium">
+                  {{ applyForm.resumeFile ? 'SELECTED CV: ' + applyForm.resumeFile.name : 'Drag & drop resume (PDF/DOCX) or browse' }}
+                </label>
+              </div>
+
+              <div class="flex space-x-3 pt-2">
+                <button type="submit" [disabled]="isSubmitting()" class="bg-slate-950 hover:bg-slate-800 text-white rounded-xl px-5 py-3 text-xs font-bold">Submit Application</button>
+                <button type="button" (click)="selectedApplyJob.set(null)" class="text-slate-400 hover:text-slate-600 text-xs">Cancel</button>
+              </div>
+            </form>
+          }
+        </div>
+      }
+    </section>
+  }
+
+  <!-- CONTACT US SECTION -->
+  @if (activeTab() === 'contact') {
+    <section class="py-16 max-w-7xl mx-auto px-4">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-slate-900">Office Coordinates</h3>
+          <div class="space-y-3 font-sans text-sm text-slate-600">
+            <p><strong>HQ ADDRESS:</strong> 46-C Industrial Estate Phase-1, Sher Shah Town, Multan, 60000 Pakistan</p>
+            <p><strong>EMAIL:</strong> info@malikenterprises.com.pk</p>
+            <p><strong>HOURS:</strong> Monday – Saturday: 09:00 AM – 06:00 PM</p>
+          </div>
+        </div>
+
+        <div class="p-8 border bg-white rounded-2xl shadow-sm">
+          <h4 class="font-bold text-lg mb-4 text-slate-900">Secure Dispatch terminal</h4>
+          @if (contactSuccess()) {
+            <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-sm">
+              {{ contactSuccess() }} <br> <strong>DISPATCH ID: {{ contactReceipt() }}</strong>
+            </div>
+          } @else {
+            <form (submit)="submitContact()" class="space-y-4">
+              <input type="text" [(ngModel)]="contactForm.name" name="cname" placeholder="Name" class="border p-2.5 rounded-lg text-sm w-full" required />
+              <input type="email" [(ngModel)]="contactForm.email" name="cemail" placeholder="Email Address" class="border p-2.5 rounded-lg text-sm w-full" required />
+              <input type="text" [(ngModel)]="contactForm.subject" name="csubject" placeholder="Subject" class="border p-2.5 rounded-lg text-sm w-full" required />
+              <textarea [(ngModel)]="contactForm.message" name="cmessage" placeholder="Detailed Inquiry Payload" class="border p-2.5 rounded-lg text-sm w-full" rows="4" required></textarea>
+              <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white rounded-xl py-3 px-4 font-bold text-xs">Transmit Secure Message</button>
+            </form>
+          }
+        </div>
+      </div>
+    </section>
+  }
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-slate-950 text-slate-400 py-12 border-t">
+  <div class="mx-auto max-w-7xl px-4 text-center space-y-2">
+    <p class="text-white font-bold tracking-wider">MALIK ENTERPRISES</p>
+    <p class="text-xs">46-C Industrial Estate Phase-1, Sher Shah Town, Multan, Pakistan</p>
+    <p class="text-[10px] text-slate-600">© 2026 Malik Enterprises. SSL Secured API Tunnel.</p>
+  </div>
+</footer>
