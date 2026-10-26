@@ -1,117 +1,203 @@
-import { useState, useEffect } from "react";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import About from "./components/About";
-import Services from "./components/Services";
-import Careers from "./components/Careers";
-import Contact from "./components/Contact";
-import AdminPortal from "./components/AdminPortal";
-import { ActiveTab } from "./types";
+import { Navbar, Footer, Hero, About, Services, Contact, AdminPortal } from "./components";
+import { useNavigation } from "./hooks";
+import { DIVISIONS_DATA, INFRASTRUCTURE_HIGHLIGHTS, COMPANY_DETAILS } from "./data";
 import { 
-  MapPin, 
-  Mail, 
-  Layers, 
-  Award,
-  ArrowUpRight
+  ArrowUpRight, 
+  Boxes, 
+  Wrench, 
+  Cpu 
 } from "lucide-react";
 
-const getTabFromPathname = (pathname: string): ActiveTab => {
-  if (pathname === "/aboutus.html") return "about";
-  if (pathname === "/products.html") return "services";
-  if (pathname === "/careers.html") return "careers";
-  if (pathname === "/contactus.html") return "contact";
-  if (pathname === "/admin.html" || pathname === "/admin") return "admin";
-  return "home";
-};
-
 export default function App() {
-  const [activeTab, setActiveTab] = useState<ActiveTab>(() => {
-    return getTabFromPathname(window.location.pathname);
-  });
-  // Removed API Connected state/badge
+  const { activeTab, setActiveTab } = useNavigation();
 
-  useEffect(() => {
-    const handlePopState = () => {
-      setActiveTab(getTabFromPathname(window.location.pathname));
-    };
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
+  const getDivisionIcon = (id: string) => {
+    switch (id) {
+      case "div-plastics":
+        return Boxes;
+      case "div-machinery":
+        return Wrench;
+      case "div-sourcing":
+      default:
+        return Cpu;
+    }
+  };
 
-  const handleSetTab = (tab: ActiveTab) => {
-    setActiveTab(tab);
-    
-    let path = "/index.html";
-    if (tab === "about") path = "/aboutus.html";
-    else if (tab === "services") path = "/products.html";
-    else if (tab === "careers") path = "/careers.html";
-    else if (tab === "contact") path = "/contactus.html";
-    else if (tab === "admin") path = "/admin.html";
-    else path = "/index.html";
-
-    window.history.pushState(null, "", path);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const getDivisionCategory = (id: string) => {
+    switch (id) {
+      case "div-plastics":
+        return "Polymers & Plastics";
+      case "div-machinery":
+        return "Mechanical Overhaul";
+      case "div-sourcing":
+      default:
+        return "Logistics Hub";
+    }
   };
 
   return (
-    <div className="min-h-screen bg-vn-surface flex flex-col font-sans selection:bg-vn-tertiary selection:text-vn-surface text-vn-primary" id="main-application-frame">
-      <Navbar activeTab={activeTab} setActiveTab={handleSetTab} />
+    <div className="min-h-screen bg-slate-50 flex flex-col font-sans selection:bg-blue-600 selection:text-white text-slate-900" id="main-application-frame">
+      <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <main className="flex-grow">
         {activeTab === "home" && (
           <div className="space-y-0" id="home-view">
-            <Hero setActiveTab={handleSetTab} />
+            <Hero setActiveTab={setActiveTab} />
             
-            <section className="bg-vn-neutral py-24 border-y border-vn-card">
-              <div className="mx-auto max-w-5xl px-4 text-center">
-                <span className="font-mono text-xs font-bold text-vn-tertiary uppercase tracking-widest block mb-2">
-                  MALIK ENTERPRISES AT A GLANCE
-                </span>
-                <h3 className="font-display italic text-5xl text-vn-primary sm:text-6xl mt-4">
-                  Leading Pakistan's Plastics & Sourcing
-                </h3>
-                <p className="font-sans text-base text-vn-secondary mt-6 leading-relaxed max-w-3xl mx-auto">
-                  From our advanced industrial plant in Multan Phase-1 Industrial Estate, we deploy automated polymer solutions, high-grade sourcing hubs, and certified machinery repair systems to deliver lasting quality across Southern Punjab and beyond.
-                </p>
-                <div className="mt-8">
-                  <button
-                    id="home-about-readmore"
-                    onClick={() => handleSetTab("about")}
-                    className="inline-flex items-center space-x-2 text-[13px] font-semibold text-vn-surface bg-vn-primary px-[22px] py-[11px] rounded-pill shadow-vn-btn transition-all"
-                  >
-                    <span>Read Our Core Pledge & History</span>
-                    <ArrowUpRight className="h-4 w-4" />
-                  </button>
+            {/* Enterprise Summary Section */}
+            <section className="bg-white py-16 sm:py-20 border-b border-slate-200">
+              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="max-w-3xl mx-auto text-center mb-12">
+                  <span className="font-mono text-xs font-bold text-blue-700 uppercase tracking-wider block mb-2">
+                    Industrial Capabilities & Operations
+                  </span>
+                  <h2 className="font-sans text-3xl sm:text-4xl font-extrabold text-slate-900">
+                    Integrated Manufacturing & Engineering Infrastructure
+                  </h2>
+                  <p className="font-sans text-base text-slate-600 mt-3 leading-relaxed">
+                    Operating from Multan's Phase-1 Industrial Estate, Malik Enterprises delivers high-output contract manufacturing, precision mechanical overhaul, and enterprise distribution across Southern Punjab.
+                  </p>
+                </div>
+
+                {/* 3 Core Divisions Cards with Image Previews */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {DIVISIONS_DATA.map((div, idx) => {
+                    const DivIcon = getDivisionIcon(div.id);
+                    return (
+                      <div 
+                        key={div.id}
+                        className="rounded-xl border border-slate-200/90 bg-white p-6 flex flex-col justify-between hover:shadow-md transition-shadow duration-200"
+                      >
+                        <div>
+                          <div className="relative rounded-lg overflow-hidden h-48 mb-5 border border-slate-200">
+                            <img 
+                              src={div.primaryImage || div.image} 
+                              alt={div.name} 
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute bottom-2.5 left-2.5 bg-slate-900/90 text-white font-mono text-[10px] font-bold px-2 py-0.5 rounded">
+                              DIVISION 0{idx + 1}
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2 text-blue-700 font-mono text-xs font-semibold uppercase mb-1">
+                            <DivIcon className="h-4 w-4" />
+                            <span>{getDivisionCategory(div.id)}</span>
+                          </div>
+                          
+                          <h3 className="text-lg font-bold text-slate-900 mb-2">
+                            {div.name}
+                          </h3>
+                          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">
+                            {div.shortDesc}
+                          </p>
+                        </div>
+
+                        <div className="pt-5 mt-5 border-t border-slate-100 flex items-center justify-between">
+                          <span className="text-xs font-mono text-slate-500">{div.technicalMetric}</span>
+                          <button 
+                            onClick={() => setActiveTab("services")}
+                            className="inline-flex items-center space-x-1 text-xs font-bold text-blue-700 hover:text-blue-800 cursor-pointer"
+                          >
+                            <span>Specifications</span>
+                            <ArrowUpRight className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
+
+            {/* Expanded Industrial Infrastructure Gallery */}
+            <section className="bg-slate-50/70 py-16 sm:py-20 border-b border-slate-200">
+              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
+                  <div className="max-w-2xl">
+                    <span className="font-mono text-xs font-bold text-blue-700 uppercase tracking-wider block mb-1">
+                      OPERATIONAL ASSETS
+                    </span>
+                    <h2 className="font-sans text-2xl sm:text-3xl font-extrabold text-slate-900">
+                      Industrial Facility & Equipment Showcase
+                    </h2>
+                    <p className="text-sm text-slate-600 mt-2 font-sans">
+                      A visual tour of our Multan production lines, CNC machining centers, and logistics hubs.
+                    </p>
+                  </div>
+                  <div className="mt-4 md:mt-0">
+                    <button
+                      onClick={() => setActiveTab("contact")}
+                      className="inline-flex items-center space-x-1.5 text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 px-4 py-2.5 rounded-md shadow-xs transition-colors cursor-pointer"
+                    >
+                      <span>Schedule Plant Inspection</span>
+                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                  {INFRASTRUCTURE_HIGHLIGHTS.map((item, idx) => (
+                    <div 
+                      key={idx}
+                      className="bg-white rounded-lg overflow-hidden border border-slate-200 shadow-2xs hover:shadow-xs transition-shadow flex flex-col"
+                    >
+                      <div className="relative h-44 overflow-hidden">
+                        <img 
+                          src={item.image} 
+                          alt={item.title} 
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute bottom-2 right-2 bg-slate-900/85 text-white text-[10px] font-mono px-2 py-0.5 rounded">
+                          {item.stat}
+                        </div>
+                      </div>
+                      <div className="p-4 flex flex-col flex-grow justify-between">
+                        <div>
+                          <span className="font-mono text-[10px] font-bold text-blue-700 uppercase tracking-wider block mb-1">
+                            {item.category}
+                          </span>
+                          <h4 className="font-bold text-sm text-slate-900 mb-1 leading-snug">
+                            {item.title}
+                          </h4>
+                          <p className="text-xs text-slate-600 leading-relaxed font-sans">
+                            {item.desc}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </section>
             
-            <section className="bg-vn-surface py-24 text-center border-b border-vn-card">
-              <div className="mx-auto max-w-5xl px-4">
-                <span className="font-mono text-xs font-bold text-vn-tertiary uppercase tracking-widest block mb-2">
-                  Unified Industrial Leadership
+            {/* Direct Corporate Engagement Banner */}
+            <section className="bg-white py-16 text-center border-b border-slate-200">
+              <div className="mx-auto max-w-4xl px-4">
+                <span className="font-mono text-xs font-bold text-blue-700 uppercase tracking-wider block mb-2">
+                  DIRECT CORPORATE ENGAGEMENT
                 </span>
-                <h3 className="font-display italic text-4xl text-vn-primary sm:text-5xl mt-4">
-                  Ready to Experience Malik Enterprises?
+                <h3 className="font-sans text-2xl sm:text-3xl font-extrabold text-slate-900">
+                  Partner with {COMPANY_DETAILS.name}
                 </h3>
-                <p className="text-base text-vn-secondary mt-4 max-w-2xl mx-auto leading-relaxed">
-                  Review our customizable polymer plastics configurations, explore open engineering roles, or send custom general merchandise sourcing requirements to our executive desks.
+                <p className="text-sm sm:text-base text-slate-600 mt-3 max-w-2xl mx-auto leading-relaxed font-sans">
+                  Discuss bulk contract manufacturing, high-density polymer orders, or schedule preventative machinery diagnostics with our engineering lead.
                 </p>
-                <div className="flex justify-center space-x-4 mt-8">
+                <div className="flex flex-wrap justify-center gap-3.5 mt-8">
                   <button
                     id="home-splicer-services"
-                    onClick={() => handleSetTab("services")}
-                    className="inline-flex items-center space-x-2 text-[13px] font-semibold text-vn-surface bg-vn-primary px-[22px] py-[11px] rounded-pill shadow-vn-btn transition-all"
+                    onClick={() => setActiveTab("services")}
+                    className="inline-flex items-center space-x-2 text-xs sm:text-sm font-semibold text-white bg-blue-700 hover:bg-blue-800 px-5 py-2.5 rounded-md shadow-xs transition-all cursor-pointer"
                   >
-                    <span>View Division Details</span>
+                    <span>View Division Specifications</span>
                     <ArrowUpRight className="h-4 w-4" />
                   </button>
                   <button
                     id="home-splicer-contact"
-                    onClick={() => handleSetTab("contact")}
-                    className="inline-flex items-center space-x-2 text-[13px] font-medium text-vn-primary bg-vn-card border border-white/10 px-[22px] py-[11px] rounded-pill transition-all"
+                    onClick={() => setActiveTab("contact")}
+                    className="inline-flex items-center space-x-2 text-xs sm:text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 px-5 py-2.5 rounded-md transition-colors cursor-pointer"
                   >
-                    <span>Contact Operations</span>
+                    <span>Contact Executive Operations</span>
                   </button>
                 </div>
               </div>
@@ -121,117 +207,11 @@ export default function App() {
 
         {activeTab === "about" && <About />}
         {activeTab === "services" && <Services />}
-        {activeTab === "careers" && <Careers />}
         {activeTab === "contact" && <Contact />}
         {activeTab === "admin" && <AdminPortal />}
       </main>
 
-      <footer className="bg-vn-surface text-vn-secondary border-t border-white/5 py-12 md:py-24" id="app-footer">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 border-b border-white/5 pb-12 mb-12">
-            
-            <div className="md:col-span-5 space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-md bg-vn-card text-vn-primary border border-white/10">
-                  <Layers className="h-5 w-5" />
-                </div>
-                <div>
-                  <h4 className="font-display text-xl tracking-tight text-vn-primary leading-none">
-                    MALIK ENTERPRISES
-                  </h4>
-                  <span className="text-[10px] font-medium text-vn-tertiary tracking-widest uppercase block mt-1 font-mono">
-                    Certified Industrial Group
-                  </span>
-                </div>
-              </div>
-              
-              <p className="font-sans text-sm text-vn-secondary leading-relaxed max-w-sm mt-4">
-                A multi-disciplinary leader specializing in general merchandise logistics, polymer plastic manufacturing, and commercial industrial machinery maintenance in Multan, Pakistan.
-              </p>
-
-              <div className="flex items-center space-x-2 text-sm text-vn-secondary mt-4">
-                <Award className="h-4 w-4 text-vn-tertiary shrink-0" />
-                <span>Executive Lead: Malik Faisal Azeem</span>
-              </div>
-            </div>
-
-            <div className="md:col-span-3 space-y-6">
-              <h5 className="font-mono text-[10px] font-medium uppercase tracking-widest text-vn-primary">
-                Operations Directory
-              </h5>
-              <ul className="space-y-3 text-sm">
-                <li>
-                  <button 
-                    onClick={() => handleSetTab("home")} 
-                    className="hover:text-vn-primary transition-colors text-vn-secondary"
-                  >
-                    Corporate Home
-                  </button>
-                </li>
-                <li>
-                  <button 
-                    onClick={() => handleSetTab("about")} 
-                    className="hover:text-vn-primary transition-colors text-vn-secondary"
-                  >
-                    About Us
-                  </button>
-                </li>
-                <li>
-                  <button 
-                    onClick={() => handleSetTab("services")} 
-                    className="hover:text-vn-primary transition-colors text-vn-secondary"
-                  >
-                    Business Divisions
-                  </button>
-                </li>
-                <li>
-                  <button 
-                    onClick={() => handleSetTab("careers")} 
-                    className="hover:text-vn-primary transition-colors text-vn-secondary"
-                  >
-                    Open Careers positions
-                  </button>
-                </li>
-                <li>
-                  <button 
-                    onClick={() => handleSetTab("contact")} 
-                    className="hover:text-vn-primary transition-colors text-vn-secondary"
-                  >
-                    Get in Touch
-                  </button>
-                </li>
-              </ul>
-            </div>
-
-            <div className="md:col-span-4 space-y-6">
-              <h5 className="font-mono text-[10px] font-medium uppercase tracking-widest text-vn-primary">
-                Industrial Hub Address
-              </h5>
-              <div className="space-y-4 text-sm text-vn-secondary font-sans">
-                <div className="flex items-start space-x-3">
-                  <MapPin className="h-5 w-5 text-vn-tertiary shrink-0 mt-0.5" />
-                  <span>
-                    46-C Industrial Estate Phase-1, Sher Shah Town, Multan, 60000 Pakistan
-                  </span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Mail className="h-5 w-5 text-vn-tertiary shrink-0" />
-                  <span className="font-mono text-vn-primary">info@malikenterprises.com.pk</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between text-sm text-vn-secondary gap-4">
-            <div>
-              <span>© {new Date().getFullYear()} Malik Enterprises. All rights reserved.</span>
-            </div>
-          </div>
-
-        </div>
-      </footer>
+      <Footer onSelectTab={setActiveTab} />
     </div>
   );
 }

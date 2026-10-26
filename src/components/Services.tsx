@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Division } from "../types";
+import { DIVISIONS_DATA } from "../data/divisions";
 import { 
   Building, 
   Package, 
@@ -7,76 +8,12 @@ import {
   CheckCircle2, 
   ArrowRight, 
   Warehouse, 
-  Sparkles, 
-  Gauge 
+  Cpu
 } from "lucide-react";
-import polymerFactory from "../assets/images/polymer_factory_1783725229258.jpg";
-import supplyChainLogistics from "../assets/images/supply_chain_logistics_1783725710427.jpg";
-import machineryRepair from "../assets/images/machinery_repair_1783725722573.jpg";
 
-export default function Services() {
-  const divisions: Division[] = [
-    {
-      id: "div-sourcing",
-      name: "General Merchandise & Sourcing",
-      shortDesc: "Bulk procurement, supercenter warehousing, and custom distribution logistics.",
-      fullDesc: "We provide high-capacity supply chain services for warehouse clubs, supercenters, and major general merchandise retailers. Our strategic hub in Multan oversees inventory sorting, quality auditing, bulk packaging, and freight routing for non-perishable consumer products, household goods, and industrial materials.",
-      icon: "Warehouse",
-      highlights: [
-        "End-to-End Warehousing & Sorting",
-        "Bulk Sourcing of General Merchandise",
-        "Supply Chain Audit & Inspection",
-        "Freight & Southern Punjab Distribution networks"
-      ],
-      capabilities: [
-        "100,000+ sq ft secure storage facilities in Sher Shah Town.",
-        "Advanced Warehouse Management Systems (WMS) for barcode tracking.",
-        "Tailored bulk retail logistics packaging for major supercenters.",
-        "Scheduled regional container shipping and secure inventory dispatch."
-      ]
-    },
-    {
-      id: "div-plastics",
-      name: "Plastics Product Manufacturing",
-      shortDesc: "High-specification industrial polymers, blow molding, and custom injection extrusion.",
-      fullDesc: "Our Multan Industrial Estate factory features advanced automated machinery to manufacture customized polymer and plastic solutions. From industrial packaging, high-density crates, and chemical containers to precision-molded thermoplastic parts, we meet exact dimensional tolerances and durability benchmarks.",
-      icon: "Package",
-      highlights: [
-        "Custom Blow Molding & Extrusion",
-        "High-Precision Injection Molding",
-        "Industrial Packaging & Poly-containers",
-        "Rigorous Material Stress Testing"
-      ],
-      capabilities: [
-        "Advanced high-tonnage injection molding machines (150T - 800T clamp force).",
-        "Custom tooling design and prototype fabrication.",
-        "High-density polyethylene (HDPE) & polypropylene (PP) molding specialties.",
-        "Eco-friendly recycling loops built straight into extrusion lines."
-      ]
-    },
-    {
-      id: "div-machinery",
-      name: "Machinery Repair & Maintenance",
-      shortDesc: "Expert mechanical overhaul, preventative troubleshooting, and hydraulic calibration.",
-      fullDesc: "We operate a dedicated industrial service division that diagnoses, repairs, and optimizes heavy manufacturing machinery. Specializing in mechanical conveyors, hydraulic gear systems, pneumatic cylinders, and heavy extruder setups (excluding automotive and electronics), we keep local factories running with minimal downtime.",
-      icon: "Settings",
-      highlights: [
-        "Industrial Hydraulic Diagnostics",
-        "Preventative Maintenance plans",
-        "Gearbox Rebuilding & Alignment",
-        "Emergency Field Repair & Troubleshooting"
-      ],
-      capabilities: [
-        "Precision laser alignment for heavy-duty drive shafts.",
-        "In-shop gearbox rebuilds with customized steel machining.",
-        "Hydraulic seal replacements and high-pressure system testing.",
-        "On-site emergency maintenance teams available for Industrial Estate operations."
-      ]
-    }
-  ];
-
-  const [activeDivId, setActiveDivId] = useState<string>(divisions[0].id);
-  const activeDiv = divisions.find(d => d.id === activeDivId) || divisions[0];
+export function Services() {
+  const [activeDivId, setActiveDivId] = useState<string>(DIVISIONS_DATA[0].id);
+  const activeDiv: Division = DIVISIONS_DATA.find(d => d.id === activeDivId) || DIVISIONS_DATA[0];
 
   const getIconComponent = (iconName: string) => {
     switch (iconName) {
@@ -92,23 +29,25 @@ export default function Services() {
   };
 
   return (
-    <section className="bg-vn-surface py-16 sm:py-24" id="divisions-section">
+    <section className="bg-slate-50/70 py-16 sm:py-20 border-b border-slate-200" id="divisions-section">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
-        <div className="max-w-3xl mb-12 sm:mb-16">
-          <span className="font-mono text-[10px] font-medium uppercase tracking-widest text-vn-tertiary block mb-3">
-            Our Enterprise Capabilities
-          </span>
-          <h2 className="font-display italic text-4xl tracking-tight text-vn-primary sm:text-5xl" id="divisions-heading">
-            Three Specialized Industrial Divisions
+        {/* Section Header */}
+        <div className="max-w-3xl mb-12">
+          <div className="inline-flex items-center space-x-2 text-xs font-mono text-blue-700 bg-blue-50 border border-blue-200/80 px-2.5 py-1 rounded mb-3">
+            <span>OPERATIONAL CAPABILITIES & DIVISIONS</span>
+          </div>
+          <h2 className="font-sans text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900" id="divisions-heading">
+            Engineering Precision & Production Infrastructure
           </h2>
-          <p className="font-sans text-base text-vn-secondary mt-6 leading-relaxed">
-            Malik Enterprises operates three highly integrated divisions in Multan, combining supply chain scale with advanced plastics fabrication and robust engineering repairs.
+          <p className="font-sans text-base text-slate-600 mt-3 leading-relaxed">
+            Headquartered in Multan’s Phase-1 Industrial Estate, Malik Enterprises operates three dedicated commercial divisions engineered for rigorous industrial throughput and certified quality assurance.
           </p>
         </div>
 
-        <div className="flex border-b border-white/10 mb-10 overflow-x-auto hide-scrollbar" id="division-tabs">
-          {divisions.map((division) => {
+        {/* Division Selector Tabs */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8" id="division-tabs">
+          {DIVISIONS_DATA.map((division, idx) => {
             const IconComp = getIconComponent(division.icon);
             const isActive = division.id === activeDivId;
             return (
@@ -116,82 +55,127 @@ export default function Services() {
                 key={division.id}
                 id={`tab-btn-${division.id}`}
                 onClick={() => setActiveDivId(division.id)}
-                className={`flex items-center space-x-2 py-4 px-6 text-[13px] font-medium whitespace-nowrap border-b-[2px] transition-all ${
+                className={`flex items-center justify-between p-4 rounded-lg border text-left transition-all duration-150 cursor-pointer ${
                   isActive
-                    ? "border-vn-tertiary text-vn-tertiary"
-                    : "border-transparent text-vn-secondary hover:text-vn-primary hover:bg-vn-card/50"
+                    ? "bg-white border-blue-600 shadow-sm ring-1 ring-blue-600"
+                    : "bg-white/80 border-slate-200 hover:border-slate-300 hover:bg-white text-slate-700"
                 }`}
               >
-                <IconComp className="h-4 w-4" />
-                <span>{division.name}</span>
+                <div className="flex items-center space-x-3">
+                  <div className={`p-2 rounded-md ${isActive ? "bg-blue-700 text-white" : "bg-slate-100 text-slate-600"}`}>
+                    <IconComp className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <span className="font-mono text-[10px] uppercase font-bold text-slate-400 block">
+                      DIVISION 0{idx + 1}
+                    </span>
+                    <span className={`text-sm font-bold block ${isActive ? "text-blue-700" : "text-slate-900"}`}>
+                      {division.name}
+                    </span>
+                  </div>
+                </div>
+                <span className="font-mono text-xs text-slate-400">
+                  {division.badge}
+                </span>
               </button>
             );
           })}
         </div>
 
+        {/* Active Division Engineering Dossier */}
         <div 
-          className="rounded-lg border border-white/10 bg-vn-neutral p-8 sm:p-12 shadow-vn-card animate-fade-in relative overflow-hidden" 
+          className="rounded-xl border border-slate-200/90 bg-white p-6 sm:p-10 shadow-sm" 
           key={activeDiv.id}
           id="active-division-panel"
         >
-          {activeDiv.id === "div-plastics" && (
-            <img src={polymerFactory} alt="Polymer manufacturing" className="absolute right-0 top-0 bottom-0 w-1/3 object-cover opacity-20 [mask-image:linear-gradient(to_left,white,transparent)]" />
-          )}
-          {activeDiv.id === "div-sourcing" && (
-            <img src={supplyChainLogistics} alt="Supply Chain Logistics" className="absolute right-0 top-0 bottom-0 w-1/3 object-cover opacity-20 [mask-image:linear-gradient(to_left,white,transparent)]" />
-          )}
-          {activeDiv.id === "div-machinery" && (
-            <img src={machineryRepair} alt="Machinery Repair" className="absolute right-0 top-0 bottom-0 w-1/3 object-cover opacity-20 [mask-image:linear-gradient(to_left,white,transparent)]" />
-          )}
+          {/* Dual Production Photography Viewport */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-5 mb-8">
+            {activeDiv.primaryImage && (
+              <div className="md:col-span-7 rounded-lg overflow-hidden h-60 sm:h-72 border border-slate-200 relative group">
+                <img 
+                  src={activeDiv.primaryImage} 
+                  alt={`${activeDiv.name} primary facility`} 
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-102" 
+                />
+                <div className="absolute bottom-3 left-3 bg-slate-900/90 text-white text-[11px] font-mono px-2.5 py-1 rounded">
+                  PRIMARY FACILITY · MULTAN ESTATE
+                </div>
+              </div>
+            )}
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 relative z-10">
+            {activeDiv.secondaryImage && (
+              <div className="md:col-span-5 rounded-lg overflow-hidden h-60 sm:h-72 border border-slate-200 relative group">
+                <img 
+                  src={activeDiv.secondaryImage} 
+                  alt={`${activeDiv.name} secondary operations`} 
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-102" 
+                />
+                <div className="absolute bottom-3 left-3 bg-slate-900/90 text-white text-[11px] font-mono px-2.5 py-1 rounded">
+                  QUALITY & AUTOMATION CELL
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
             
-            <div className="lg:col-span-7 space-y-8 border-l-[2px] border-vn-tertiary pl-6">
-              <h3 className="font-display italic text-3xl sm:text-4xl text-vn-primary">{activeDiv.name}</h3>
+            {/* Left Specs & Descriptions */}
+            <div className="lg:col-span-7 space-y-6">
+              <div>
+                <span className="font-mono text-xs font-semibold text-blue-700 uppercase tracking-wider block mb-1">
+                  Scope of Work & Capabilities
+                </span>
+                <h3 className="font-sans text-2xl sm:text-3xl font-extrabold text-slate-900">
+                  {activeDiv.name}
+                </h3>
+              </div>
 
-              <p className="font-sans text-base text-vn-secondary leading-relaxed">
+              <p className="font-sans text-base text-slate-600 leading-relaxed">
                 {activeDiv.fullDesc}
               </p>
 
-              <div className="space-y-4 pt-2">
-                <h4 className="font-mono text-[10px] font-medium text-vn-tertiary uppercase tracking-widest">
-                  Key Focus Areas:
+              <div className="space-y-3 pt-2">
+                <h4 className="font-sans text-sm font-bold text-slate-900 uppercase tracking-wider">
+                  Verified Manufacturing Deliverables
                 </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {activeDiv.highlights.map((hl, idx) => (
-                    <div key={idx} className="flex items-start space-x-3 text-sm text-vn-primary">
-                      <CheckCircle2 className="h-5 w-5 text-vn-tertiary shrink-0" />
-                      <span>{hl}</span>
+                    <div key={idx} className="flex items-start space-x-2.5 text-xs sm:text-sm text-slate-700 bg-slate-50/80 p-3 rounded-md border border-slate-200/70">
+                      <CheckCircle2 className="h-4 w-4 text-blue-600 shrink-0 mt-0.5" />
+                      <span className="font-medium leading-snug">{hl}</span>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
 
+            {/* Right Technical Specifications Card */}
             <div className="lg:col-span-5">
-              <div className="rounded-lg border border-white/5 bg-vn-card p-6 sm:p-8 shadow-vn-card">
+              <div className="rounded-lg border border-slate-200 bg-slate-50/50 p-6">
                 
-                <h4 className="font-mono text-[10px] font-medium text-vn-primary border-b border-white/10 pb-4 mb-6 flex items-center space-x-2 uppercase tracking-widest">
-                  <Sparkles className="h-4 w-4 text-vn-tertiary" />
-                  <span>Technical Capacity Specs</span>
-                </h4>
+                <div className="flex items-center space-x-2 border-b border-slate-200 pb-3 mb-4">
+                  <Cpu className="h-4 w-4 text-blue-700" />
+                  <h4 className="font-mono text-xs font-bold text-slate-900 uppercase tracking-wider">
+                    Engineering Specs & Tolerances
+                  </h4>
+                </div>
 
-                <ul className="space-y-5">
+                <div className="space-y-3">
                   {activeDiv.capabilities.map((cap, idx) => (
-                    <li key={idx} className="flex items-start space-x-3 text-sm text-vn-secondary">
-                      <span className="font-mono text-[10px] text-vn-tertiary mt-1">
+                    <div key={idx} className="bg-white p-3 rounded border border-slate-200/80 flex items-start space-x-3">
+                      <span className="font-mono text-xs font-bold text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200/60 shrink-0">
                         0{idx + 1}
                       </span>
-                      <p className="font-sans leading-relaxed">{cap}</p>
-                    </li>
+                      <p className="font-sans text-xs sm:text-sm text-slate-700 leading-snug">{cap}</p>
+                    </div>
                   ))}
-                </ul>
+                </div>
 
-                <div className="mt-8 border-t border-white/10 pt-5 flex items-center justify-between text-[10px] font-mono text-vn-secondary uppercase tracking-widest">
-                  <span>Deployed // Multan</span>
-                  <span className="flex items-center space-x-2 text-vn-primary">
-                    <span>Standard Ops</span>
-                    <ArrowRight className="h-3 w-3 text-vn-tertiary" />
+                <div className="mt-6 pt-4 border-t border-slate-200 flex items-center justify-between text-xs font-mono text-slate-500">
+                  <span>METRIC: {activeDiv.technicalMetric}</span>
+                  <span className="text-blue-700 font-semibold inline-flex items-center space-x-1">
+                    <span>Active Lines</span>
+                    <ArrowRight className="h-3.5 w-3.5" />
                   </span>
                 </div>
               </div>
@@ -204,3 +188,5 @@ export default function Services() {
     </section>
   );
 }
+
+export default Services;

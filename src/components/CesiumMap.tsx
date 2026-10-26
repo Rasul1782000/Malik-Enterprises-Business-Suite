@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-export default function CesiumMap({
+export function CesiumMap({
   latitude = 30.1575,
   longitude = 71.4331,
   label = "MALIK ENTERPRISES INDUSTRIAL PLANT"
@@ -196,47 +196,46 @@ export default function CesiumMap({
   };
 
   return (
-    <div className="relative rounded-2xl overflow-hidden border border-sage-200/80 bg-beige-100 shadow-md flex flex-col h-[340px] w-full" id="cesium-map-card">
+    <div className="relative rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm flex flex-col h-[340px] w-full" id="cesium-map-card">
       
       {/* Top Header HUD */}
-      <div className="bg-sage-800 text-beige-50 px-4 py-2.5 flex items-center justify-between border-b border-sage-900/60 font-sans">
-        <div className="flex items-center space-x-2">
-          <Earth className="h-4.5 w-4.5 text-sage-300 animate-spin" style={{ animationDuration: '20s' }} />
+      <div className="bg-slate-900 text-white px-4 py-3 flex items-center justify-between border-b border-slate-800 font-sans">
+        <div className="flex items-center space-x-2.5">
+          <Earth className="h-4 w-4 text-blue-400" />
           <div>
-            <span className="text-[10px] uppercase font-bold tracking-widest block font-display">
-              CESIUM 3D GLOBE RADAR
+            <span className="text-xs uppercase font-bold tracking-wider block">
+              Cesium 3D Satellite Imagery
             </span>
-            <span className="text-[8px] font-mono text-sage-200 block -mt-0.5">
-              TARGET: {latitude.toFixed(4)}°N, {longitude.toFixed(4)}°E
+            <span className="text-[10px] font-mono text-slate-400 block">
+              {latitude.toFixed(4)}° N, {longitude.toFixed(4)}° E · 46-C Industrial Estate Phase-1
             </span>
           </div>
         </div>
-        <div className="flex items-center space-x-1">
-          <span className="inline-flex h-2 w-2 rounded-full bg-emerald-400 animate-ping mr-1"></span>
-          <span className="text-[8px] font-mono text-sage-200 uppercase">3D_RENDER_ACTIVE</span>
+        <div className="flex items-center space-x-2 text-[10px] font-mono text-blue-300 bg-blue-950/70 border border-blue-800/60 px-2 py-0.5 rounded">
+          <span>Multan Plant Coordinates</span>
         </div>
       </div>
 
       {/* Main Map Body Container */}
-      <div className="flex-grow relative bg-stone-900 overflow-hidden">
+      <div className="flex-grow relative bg-slate-950 overflow-hidden">
         
         {/* Loading Spinner Overlays */}
         {!libLoaded && !error && (
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-stone-900 text-beige-100 space-y-3.5 p-4">
-            <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-sage-400"></div>
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-950 text-white space-y-3.5 p-4">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
             <div className="text-center">
-              <p className="text-xs font-mono tracking-wider font-bold text-beige-200 uppercase">Loading Cesium 3D Globe...</p>
-              <p className="text-[10px] text-stone-400 mt-1">Acquiring orbital imagery & terrain vectors</p>
+              <p className="text-xs font-mono tracking-wider font-bold text-slate-200 uppercase">Initializing Cesium 3D Globe</p>
+              <p className="text-[10px] text-slate-400 mt-1">Streaming orbital imagery & elevation mesh for Multan facility</p>
             </div>
           </div>
         )}
 
         {/* Error overlay */}
         {error && (
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-stone-900 text-amber-500 p-4 text-center">
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-950 text-amber-500 p-4 text-center">
             <Map className="h-10 w-10 mb-2 opacity-60" />
-            <p className="text-xs font-bold font-mono tracking-wider uppercase">GLOBE STREAM OFFLINE</p>
-            <p className="text-[10px] text-stone-400 mt-1 leading-relaxed max-w-xs">{error}</p>
+            <p className="text-xs font-bold font-mono tracking-wider uppercase">Satellite Stream Offline</p>
+            <p className="text-[10px] text-slate-400 mt-1 leading-relaxed max-w-xs">{error}</p>
           </div>
         )}
 
@@ -250,55 +249,53 @@ export default function CesiumMap({
 
         {/* Floating Quick Camera HUD Control Deck */}
         {libLoaded && !error && (
-          <div className="absolute bottom-3 right-3 z-10 flex flex-col bg-stone-900/90 backdrop-blur-xs border border-stone-700/50 rounded-xl p-1.5 shadow-xl space-y-1">
+          <div className="absolute bottom-3 right-3 z-10 flex flex-col bg-slate-900/90 backdrop-blur-xs border border-slate-700/60 rounded-lg p-1 shadow-lg space-y-1">
             <button
               onClick={zoomIn}
               title="Zoom In"
-              className="p-2 bg-stone-850 hover:bg-sage-700 text-beige-100 hover:text-white rounded-lg transition-colors border border-stone-800"
+              className="p-1.5 bg-slate-800 hover:bg-blue-600 text-slate-200 hover:text-white rounded transition-colors"
             >
-              <ZoomIn className="h-4 w-4" />
+              <ZoomIn className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={zoomOut}
               title="Zoom Out"
-              className="p-2 bg-stone-850 hover:bg-sage-700 text-beige-100 hover:text-white rounded-lg transition-colors border border-stone-800"
+              className="p-1.5 bg-slate-800 hover:bg-blue-600 text-slate-200 hover:text-white rounded transition-colors"
             >
-              <ZoomOut className="h-4 w-4" />
+              <ZoomOut className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={resetView}
               title="Reset View"
-              className="p-2 bg-stone-850 hover:bg-sage-700 text-beige-100 hover:text-white rounded-lg transition-colors border border-stone-800"
+              className="p-1.5 bg-slate-800 hover:bg-blue-600 text-slate-200 hover:text-white rounded transition-colors"
             >
-              <RotateCcw className="h-4 w-4" />
+              <RotateCcw className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={toggle3DOrbit}
               title="Rotate Orbit"
-              className="p-2 bg-stone-850 hover:bg-sage-700 text-beige-100 hover:text-white rounded-lg transition-colors border border-stone-800"
+              className="p-1.5 bg-slate-800 hover:bg-blue-600 text-slate-200 hover:text-white rounded transition-colors"
             >
-              <Navigation2 className="h-4 w-4 rotate-45" />
+              <Navigation2 className="h-3.5 w-3.5 rotate-45" />
             </button>
           </div>
         )}
 
         {/* Floating Scale & Metadata Overlay Info */}
-        <div className="absolute bottom-3 left-3 z-10 bg-stone-950/85 backdrop-blur-xs border border-stone-800/80 rounded-lg px-2.5 py-1.5 font-mono text-[8px] text-stone-400 space-y-0.5">
-          <div className="flex items-center space-x-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-sage-400"></span>
-            <span>ZOOM: DYNAMIC // TILEMAP SERVICE</span>
-          </div>
-          <div>COORDS: 30° 09' 27" N, 71° 25' 59" E</div>
-          <div>ELEVATION: ~129m (AMSL)</div>
+        <div className="absolute bottom-3 left-3 z-10 bg-slate-950/90 backdrop-blur-xs border border-slate-800 rounded-md px-3 py-1.5 font-mono text-[9px] text-slate-300 space-y-0.5">
+          <div className="text-blue-400 font-bold">COORDINATES: 30° 09' 27" N, 71° 25' 59" E</div>
+          <div className="text-slate-400">ELEVATION: 129m AMSL · Multan, Southern Punjab</div>
         </div>
 
       </div>
 
-      {/* Earthy Footer details */}
-      <div className="bg-beige-50 border-t border-sage-100 px-4 py-2 text-[10px] text-sage-700 font-sans text-center leading-relaxed font-semibold">
-        Interactive 3D preview of <strong className="text-sage-800">Malik Enterprises Industrial Hub Phase-1</strong>. Double-click the globe or use camera nodes to navigate terrain.
+      {/* Enterprise Footer details */}
+      <div className="bg-slate-50 border-t border-slate-200 px-4 py-2 text-[11px] text-slate-600 font-sans text-center leading-relaxed">
+        Interactive 3D preview of <strong className="text-slate-900 font-semibold">Malik Enterprises Industrial Hub Phase-1</strong>. Double-click the globe or use camera nodes to navigate terrain.
       </div>
 
     </div>
   );
 }
+
+export default CesiumMap;
